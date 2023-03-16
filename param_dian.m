@@ -6,8 +6,8 @@ param.N = 100; %grid number
 
 % cell growth on Met
 param.n_max = 10^4;
-param.dn = 2.78*10^-8; %unit: mm^2/h
-param.miu_max = 0.13; %unit: h^(-1)
+param.dn = 10^-3; %unit: mm^2/h
+param.miu_max = 0.5; %unit: h^(-1)
 param.K_Met = 0.6; %unit: 10^-10 mol
 
 % Met
@@ -17,17 +17,17 @@ param.YMet_n = 10^-5; %unit: 10^-10 mol
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%to be determined!!!
 % inhibition of cell growth from Pb2+
-param.KI_Pb = 0*10^-3; %unit: 10^-10 mol
+param.KI_Pb = 1*10^0; %unit: 10^-10 mol
 param.mI_Pb = 1;
 
 % inhibition of cell growth from S2-
-param.KI_S2 = 0*10^-3; %unit: 10^-10 mol
-param.mI_S2 = 1;
+param.KI_S2 = 5*10^5; %unit: 10^-10 mol
+param.mI_S2 = 4;
 
 % Met5
 param.YMet5_n = 3000;
 param.vmax_Met5 = 1000; %unit: h^(-1)
-param.KI_Met = 10; %unit: 10^-10 mol
+param.KI_Met = 30; %unit: 10^-10 mol
 param.mI_Met = 4;
 param.delta_Met5 = 0.01;
 
