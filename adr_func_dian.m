@@ -39,6 +39,7 @@ function out=adr_func_dian(~,vec,param)
     Met = vec(N+1:2*N);
     Met5 = vec(2*N+1:3*N);
     S2 = vec(3*N+1:4*N);
+    PbS = vec(4*N+1:5*N);
     Pb2 = param.Pb20;
 
     %% forward and backward (no-flux condition)
@@ -54,12 +55,16 @@ function out=adr_func_dian(~,vec,param)
     S2p=[S2(2:N); S2(N-1)];
     S2m=[S2(2); S2(1:N-1)];
 
+    PbSp=[PbS(2:N); PbS(N-1)];
+    PbSm=[PbS(2); PbS(1:N-1)];
+
     rad_vec=linspace(0,length,N)';
 
     phi=ones(N,1).*(n>1); % make sure cell number bigger than 1
 
     %% advection
     dMet5dt_a = dn./(n+1e-5).*1/(4*h^2).*(Met5p-Met5m).*(np-nm);
+    dPbSdt_a = dn./(n+1e-5).*1/(4*h^2).*(PbSp-PbSm).*(np-nm);
 
     %% diffusion
     dndt_d=dn/h^2*(np-2*n+nm)+ dn/2/h./rad_vec.*(np-nm);
@@ -87,13 +92,17 @@ function out=adr_func_dian(~,vec,param)
     dMet5dt_r = -Met5.*miu.*(1-n/n_max) + vmax_Met5./(1+(Met/KI_Met).^mI_Met).*phi - delta_Met5*Met5;
 
     % S2
-    dS2dt_r = vmax_S2*Met5.*n.*phi - Ksp*S2;
+    dS2dt_r = vmax_S2*Met5.*n.*phi - Ksp*Pb2.*S2;
+
+    % PbS
+    dPbSdt_r = Ksp*Pb2.*S2;
 
     %%% Integrating three parts together
     dndt = dndt_d+dndt_r;
     dMetdt = dMetdt_d+dMetdt_r;
     dMet5dt = dMet5dt_a+dMet5dt_r;
     dS2dt = dS2dt_d+dS2dt_r;
+    dPbSdt = dPbSdt_a+dPbSdt_r;
 
-    out = [dndt; dMetdt; dMet5dt; dS2dt];
+    out = [dndt; dMetdt; dMet5dt; dS2dt; dPbSdt];
 

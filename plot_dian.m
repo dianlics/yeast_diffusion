@@ -53,5 +53,13 @@ for i=1:nplots
     xlabel('radius (mm)')
     ylabel('S2 concentration')
 
+    nexttile
+    plot(datapos,dataPbS(i,:).*datan(i,:))
+    xlim([0 param.L])
+    %set(gca, 'YScale', 'log')
+    title('total PbS concentration')
+    xlabel('radius (mm)')
+    ylabel('total PbS concentration')
+
     title(tcl,['At time ',num2str(i),' h'])
 end

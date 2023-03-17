@@ -6,7 +6,7 @@ tic
 
 param_dian
 
-[datan, dataMet, dataMet5, dataS2, tdata] = spec_wrapper_function_dian(param);
+[datan, dataMet, dataMet5, dataS2, dataPbS, tdata] = spec_wrapper_function_dian(param);
 
 %plot_dian
 
