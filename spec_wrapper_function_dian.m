@@ -61,7 +61,7 @@ for i=1:nplots
         
         inputs = [n0; Met0; Met50; S20; PbS0];
     
-        sol=ode45(@adr_func_dian,[0 dt],inputs,options,param);
+        sol=ode45(@adr_func_dian,[0 dt],inputs,options,param,t);
         vec=(deval(sol,dt));
     
         n0 = vec(1:N);

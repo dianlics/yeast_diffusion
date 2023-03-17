@@ -1,4 +1,4 @@
-function out=adr_func_dian(~,vec,param)
+function out=adr_func_dian(~,vec,param,tt)
     % parameters for simulation
     N = param.N;
     length = param.L;
@@ -60,7 +60,17 @@ function out=adr_func_dian(~,vec,param)
 
     rad_vec=linspace(0,length,N)';
 
-    phi=ones(N,1).*(n>1); % make sure cell number bigger than 1
+    % The integrands appearing in the integro-differential nutrient and AHL equations
+    a=find(n/max(n)<.9,1,'first');
+    dist=max((param.L/param.N*a-rad_vec),0);%param.L/param.N*max((a-rad_vec),0);
+
+    phi=(n>1).*(param.Kphi^param.exp_phi./(param.Kphi^param.exp_phi+dist.^param.exp_phi)+param.phi);
+
+    if tt<=10
+        phi=ones(N,1).*(n>1);
+    end
+
+    %phi=ones(N,1).*(n>1); % make sure cell number bigger than 1
 
     %% advection
     dMet5dt_a = dn./(n+1e-5).*1/(4*h^2).*(Met5p-Met5m).*(np-nm);
