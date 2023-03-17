@@ -29,12 +29,12 @@ param.YMet5_n = 3000;
 param.vmax_Met5 = 1000; %unit: h^(-1)
 param.KI_Met = 30; %unit: 10^-10 mol
 param.mI_Met = 4;
-param.delta_Met5 = 0.01;
+param.delta_Met5 = 0.1;
 
 % S2
-param.dS2 = 10^-3; %unit: mm^2/h
+param.dS2 = 10^-5; %unit: mm^2/h
 param.vmax_S2 = 10^-3; %unit: 10^-10 mol
-param.Ksp = 1*10^-8; %unit: 10^-10 mol
+param.Ksp = 1*10^-10; %unit: 10^-10 mol
 
 % gene expression capacity parameters
 param.Kphi=1.820769438301 ; %0-20

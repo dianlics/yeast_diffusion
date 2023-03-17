@@ -62,4 +62,10 @@ for i=1:nplots
     ylabel('total PbS concentration')
 
     title(tcl,['At time ',num2str(i),' h'])
+
+%     % save results
+%     if any(i == [50 100 200 250 300 400])
+%         saveas(tcl,['At time ',num2str(i),' h'],'svg');
+%     end
+
 end
