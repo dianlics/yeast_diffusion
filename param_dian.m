@@ -15,10 +15,9 @@ param.dMet = 10^-3; %unit: mm^2/h
 param.vmax_Met = 6*10^-5; %unit: 10^-10 mol/hr
 param.YMet_n = 10^-5; %unit: 10^-10 mol
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%to be determined!!!
 % inhibition of cell growth from Pb2+
-param.KI_Pb = 1*10^0; %unit: 10^-10 mol
-param.mI_Pb = 1;
+param.KI_Pb = 1.6*10^0; %unit: 10^-10 mol
+param.mI_Pb = 4;
 
 % inhibition of cell growth from S2-
 param.KI_S2 = 5*10^5; %unit: 10^-10 mol
@@ -33,29 +32,17 @@ param.delta_Met5 = 0.1;
 
 % S2
 param.dS2 = 10^-5; %unit: mm^2/h
-param.vmax_S2 = 10^-3; %unit: 10^-10 mol
+param.vmax_S2 = 10^1; %unit: 10^-10 mol
 param.Ksp = 1*10^-10; %unit: 10^-10 mol
+
+% Pb2
+param.dPb2 = 10^-5; %unit: mm^2/h
 
 % gene expression capacity parameters
 param.Kphi=1.820769438301 ; %0-20
 param.exp_phi=3; %1-5 randi(5)
 param.phi=0;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% range of variable
-% param.n_min = 0;
-% param.Met_min = 0;
-% param.Met_max = 0.134;
-% param.Met5_min = 0;
-% param.Met5_max = param.YMet5_n*param.n_max;
-% param.SO4_min = 0;
-% param.SO4_max = 1.514;
-% param.S2_min = 0;
-% param.S2_max = 10;
-% param.Pb2_min = 0;
-% param.Pb2_max = 0.00307;
-% param.PbS_min = 0;
-% param.PbS_max = 0.00307;
 
 % Initial distributions
 % xx=linspace(0,param.L,param.N)';

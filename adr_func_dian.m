@@ -35,13 +35,16 @@ function out=adr_func_dian(~,vec,param,tt)
     Ksp = param.Ksp;
     vmax_S2 = param.vmax_S2;
 
+    % Pb2
+    dPb2 = param.dPb2;
+
     n = vec(1:N);
     Met = vec(N+1:2*N);
     Met5 = vec(2*N+1:3*N);
     S2 = vec(3*N+1:4*N);
-    PbS = vec(4*N+1:5*N);
-    Pb2 = param.Pb20;
-
+    Pb2 = vec(4*N+1:5*N);
+    PbS = vec(5*N+1:6*N);
+    
     %% forward and backward (no-flux condition)
     np=[n(2:N); n(N-1)];
     nm=[n(2); n(1:N-1)];
@@ -55,6 +58,9 @@ function out=adr_func_dian(~,vec,param,tt)
     S2p=[S2(2:N); S2(N-1)];
     S2m=[S2(2); S2(1:N-1)];
 
+    Pb2p=[Pb2(2:N); Pb2(N-1)];
+    Pb2m=[Pb2(2); Pb2(1:N-1)];
+
     PbSp=[PbS(2:N); PbS(N-1)];
     PbSm=[PbS(2); PbS(1:N-1)];
 
@@ -64,13 +70,13 @@ function out=adr_func_dian(~,vec,param,tt)
     a=find(n/max(n)<.9,1,'first');
     dist=max((param.L/param.N*a-rad_vec),0);%param.L/param.N*max((a-rad_vec),0);
 
-    phi=(n>1).*(param.Kphi^param.exp_phi./(param.Kphi^param.exp_phi+dist.^param.exp_phi)+param.phi);
+%     phi=(n>1).*(param.Kphi^param.exp_phi./(param.Kphi^param.exp_phi+dist.^param.exp_phi)+param.phi);
+% 
+%     if tt<=10
+%         phi=ones(N,1).*(n>1);
+%     end
 
-    if tt<=10
-        phi=ones(N,1).*(n>1);
-    end
-
-    %phi=ones(N,1).*(n>1); % make sure cell number bigger than 1
+    phi=ones(N,1).*(n>1); % make sure cell number bigger than 1
 
     %% advection
     dMet5dt_a = dn./(n+1e-5).*1/(4*h^2).*(Met5p-Met5m).*(np-nm);
@@ -86,10 +92,14 @@ function out=adr_func_dian(~,vec,param,tt)
     dS2dt_d=dS2/h^2*(S2p-2*S2+S2m)+ dS2/2/h./rad_vec.*(S2p-S2m);
     dS2dt_d(1)=2*dS2/h^2*(S2p(1)-2*S2(1)+S2m(1)); % origin is special: no 1/r term (singular), but factor 2
 
+    dPb2dt_d=dPb2/h^2*(Pb2p-2*Pb2+Pb2m)+ dPb2/2/h./rad_vec.*(Pb2p-Pb2m);
+    dPb2dt_d(1)=2*dPb2/h^2*(Pb2p(1)-2*Pb2(1)+Pb2m(1)); % origin is special: no 1/r term (singular), but factor 2
+
     %% reaction
     % miu
     %miu = miu_max*Met./ (K_Met+Met);
-    miu = miu_max*Met./ (K_Met+Met)./ (1+(S2/KI_S2).^mI_S2);
+    %miu = miu_max*Met./ (K_Met+Met)./ (1+(S2/KI_S2).^mI_S2);
+    miu = miu_max*Met./ (K_Met+Met)./ (1+(Pb2/KI_Pb).^mI_Pb);
     %miu = miu_max*Met./ (K_Met+Met)./ (1+(S2/KI_S2).^mI_S2)./ (1+(Pb2/KI_Pb).^mI_Pb);
 
     % cell
@@ -104,15 +114,19 @@ function out=adr_func_dian(~,vec,param,tt)
     % S2
     dS2dt_r = vmax_S2*Met5.*n.*phi - Ksp*Pb2.*S2;
 
+    % Pb2
+    dPb2dt_r = - Ksp*Pb2.*S2;
+
     % PbS
-    dPbSdt_r = Ksp*Pb2.*S2;
+    dPbSdt_r = Ksp*Pb2.*S2./(n+10^-5).*phi;
 
     %%% Integrating three parts together
     dndt = dndt_d+dndt_r;
     dMetdt = dMetdt_d+dMetdt_r;
     dMet5dt = dMet5dt_a+dMet5dt_r;
     dS2dt = dS2dt_d+dS2dt_r;
+    dPb2dt = dPb2dt_d+dPb2dt_r;
     dPbSdt = dPbSdt_a+dPbSdt_r;
 
-    out = [dndt; dMetdt; dMet5dt; dS2dt; dPbSdt];
+    out = [dndt; dMetdt; dMet5dt; dS2dt; dPb2dt; dPbSdt];
 
